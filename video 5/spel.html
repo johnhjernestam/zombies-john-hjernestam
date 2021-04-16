@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <script src="https://koda.nu/simple.js"> // Länkar till biblioteket som koda.nu har skapat så att jag kan koda med kod som bara finns i deras bibliotek
+     
+        var audio = new Audio('arkanoid.mp3'); // Filen arkanoid.mp3 är en ljudfil, variabeln är döpt till audio 
+        audio.volume = 0.4; // Volymen på ljudfilen är satt till 40% 
+
+        hideMouse(); // Gömmer mus när spelet startar så man endast ser bilden på mario 
+
+        var zombies = []; // Tom lista vid namn zombies
+
+        var i = 0; // Räkningsvariabel som bestämmer hur många gånger min loop ska loopas
+
+        while (i < 10) // När i är mindre än 10 gör den det nedanför som är innanför måsvingarna
+        {
+          zombies.push({x: random(totalWidth) , // Zombie kommer någonstans på hela skärmen (slumpmässig x-kordinat) 
+                        y: random(totalHeight) , // Zombie kommer någonstans på hela skärmen (slumpmässig y-kordinat) 
+                        speed: random(1,8)}); // Alla zombies får en bestämd hastighet som slumpas mellan 1-8 
+
+          i += 1; // i blir större och större varje gång loopen loopas, när i = 10 så gäller inte längre denna loop
+        }
+        
+        function update() // En update funktion är nodvändig då zombiesarna ska röra på sig
+        {
+          audio.play(); // Varibeln audio ska börjas spela 
+
+          clearScreen(); // Rensar skärmen för att det inte ska lagga 
+
+          var i = 0; // Räkningsvariabel som bestämmer hur många gånger min loop ska loopas
+
+          while (i < 10) // // När i är mindre än 10 gör den det nedanför som är innanför måsvingarna
+          {
+            var zombie = zombies[i]; // Hämta zombie med indexeringen i, först är i 0 sedan 1, 2, 3 osv upp till 10 (kommer hämta alla zombies)
+          
+            picture(zombie.x, zombie.y, "https://media.discordapp.net/attachments/832520998623510589/832535819931746354/New_Project_21.png"); // Bild till zombiesarna (Yoshi) som sätts ut på rätt x- och y-kordinat
+            picture(mouse.x, mouse.y, "https://cdn.discordapp.com/attachments/690567379947880489/831858880367689748/New_Project_20.png"); // Bild till musen (Mario) som sätts ut på rätt x- och y-kordinat
+          
+            if (zombie.x < mouse.x) // Om zombiens x-kordinat är mindre än musens x-kordinat så är zombien till vänster om musen och måste öka sin x-kordinat 
+              zombie.x += zombie.speed; // Öka i x-led
+            else // Om zombiens x-kordinat inte är mindre än musens x-kordinat så är zombien till höger om musen och måste minska sin x-kordinat 
+              zombie.x -= zombie.speed; // Minska i x-led 
+          
+            if (zombie.y < mouse.y) // Om zombiens y-kordinat är mindre än musens y-kordinat så är zombien över musen och måste öka sin y-kordinat (origo är uppe i vänstra hörnet) 
+              zombie.y += zombie.speed; // Öka i y-led 
+            else // Om zombiens y-kordinat inte är mindre än musens y-kordinat så är zombien under musen och måste minska sin y-kordinat (origo är uppe i vänstra hörnet)
+              zombie.y -= zombie.speed; // Minska i y-led 
+
+            if (keyboard.space) // Om mellanslagstangenten trycks ned medför det att 
+            {
+              zombie.speed=zombie.speed + 2 // alla zombies slumphastighet adderas med 2              
+            }
+          
+            if (distance(mouse, zombie) < 15) // Om avtåndet mellan Mario (musen) och Yoshi (zombiesarna) är mindre än 15 pixlar medför det att
+            {
+              audio.pause(); //audion (ljudfilen) pausas,
+              stopUpdate(); // update funktionen stoppas och alla karaktärer i spelet har förlorat sin rörelseförmåga,
+              alert("Game over! Click OK and you will get back to the menu."); // alert kommer upp som visar att spelaren förlorat,
+              showMouse(); // musen visas igen för att kunna klicka på OK
+              window.location.href = "index.html"; // och när man klickar på OK lokaliserar den href:en index.html som tar en till menyn/startsidan
+            }
+
+            i += 1; // i blir större och större varje gång loopen loopas, när i = 10 så gäller inte längre denna loop
+          } // Här är måsvingen som avslutar hela while-loopen 
+        } // Här är måsvingen som avslutar hela update funktionen
+      
+      </script> 
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zombie Apocalypse</title> <!-- Titel som står i taben -->
+  
+</head>
+<body>
+    
+</body>
+</html>
+
+<style> /* Lite css för bakgrunden */
+
+  html {
+      background: url("bakgarena.jpg") no-repeat center center fixed; /* Bakgrund som inte repeterar sig och är centrerad */
+      background-size: cover; /* Hela bakgrunden ska omfattas av url:en */
+  }
+
+</style>
